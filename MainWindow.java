@@ -15,6 +15,12 @@ import javax.swing.JRadioButton;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 
@@ -51,7 +57,18 @@ public class MainWindow extends JFrame {
 	JComboBox raceComboBox;
 	JComboBox classComboBox;
 	int pointsToSpend = 10;
-	int str = 0;
+
+	// Stats
+	int str = 10;
+	int wis = 8;
+	int dex = 8;
+	int intelligence = 5;
+	int con = 10;
+	int cha = 5;
+
+	// Race, Class 
+	static String characterClass = "Warrior";
+	static String characterRace = "Human";
 
 	// End temp
 
@@ -80,7 +97,7 @@ public class MainWindow extends JFrame {
 		JButton btnRaceInfoButton = new JButton("i");
 		btnRaceInfoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				characterRace = raceComboBox.getSelectedItem().toString();
 				displayInfoFromComboBox(raceComboBox);
 			}
 		});
@@ -98,7 +115,8 @@ public class MainWindow extends JFrame {
 		btnClassInfoButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-					displayInfoFromComboBox(classComboBox);
+				characterClass = classComboBox.getSelectedItem().toString();
+				displayInfoFromComboBox(classComboBox);
 			}
 		});
 		classSelectionPanel.add(btnClassInfoButton);
@@ -162,7 +180,7 @@ public class MainWindow extends JFrame {
 		JButton btnWisDownButton = new JButton("-");
 		wisPanel.add(btnWisDownButton);
 
-		JLabel lblWisLabel = new JLabel("Wis: 10");
+		JLabel lblWisLabel = new JLabel("Wis: " + wis);
 		lblWisLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		wisPanel.add(lblWisLabel);
 
@@ -176,7 +194,7 @@ public class MainWindow extends JFrame {
 		JButton btnDexDownButton = new JButton("-");
 		dexPanel.add(btnDexDownButton);
 
-		JLabel lblDexLabel = new JLabel("Dex: 15");
+		JLabel lblDexLabel = new JLabel("Dex: " + dex);
 		lblDexLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		dexPanel.add(lblDexLabel);
 
@@ -190,7 +208,7 @@ public class MainWindow extends JFrame {
 		JButton btnIntDownButton = new JButton("-");
 		intPanel.add(btnIntDownButton);
 
-		JLabel lblIntLabel = new JLabel("Int: 10");
+		JLabel lblIntLabel = new JLabel("Int: " + intelligence);
 		lblIntLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		intPanel.add(lblIntLabel);
 
@@ -204,7 +222,7 @@ public class MainWindow extends JFrame {
 		JButton btnConDownButton = new JButton("-");
 		conPanel.add(btnConDownButton);
 
-		JLabel lblConLabel = new JLabel("Con: 10");
+		JLabel lblConLabel = new JLabel("Con: " + con);
 		lblConLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		conPanel.add(lblConLabel);
 
@@ -219,7 +237,7 @@ public class MainWindow extends JFrame {
 		JButton btnChaDownButton = new JButton("-");
 		chaPanel.add(btnChaDownButton);
 
-		JLabel lblChaLabel = new JLabel("Cha: 10");
+		JLabel lblChaLabel = new JLabel("Cha: " + cha);
 		lblChaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		chaPanel.add(lblChaLabel);
 
@@ -228,6 +246,23 @@ public class MainWindow extends JFrame {
 
 		lbltotalStatsLabel = new JLabel("Points: " + pointsToSpend);
 		StatsPanel.add(lbltotalStatsLabel);
+
+		JPanel panel = new JPanel();
+		contentPane.add(panel);
+
+		JButton btnCreateCharacterButton = new JButton("Create");
+		btnCreateCharacterButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Integer> statsExport = new ArrayList<>();
+				Collections.addAll(statsExport, str, wis, dex, intelligence, con, cha);
+				System.out.println(statsExport);
+				createCharacter(statsExport);
+			}
+		});
+		panel.add(btnCreateCharacterButton);
+
+		JButton btnResetCharacterButton = new JButton("Reset");
+		panel.add(btnResetCharacterButton);
 
 	}
 
@@ -239,6 +274,30 @@ public class MainWindow extends JFrame {
 
 		// Opens a window.
 		displayInformation.getInformation(findDesc, false);
+
+	}
+
+
+	private static void createCharacter(List<Integer> stats) {
+		System.out.println("Creating file...");
+		String fileName = characterRace + characterClass;
+		String[] statOrder = {"Strength: ","Wisdom: ","Dexterity: ","Intelligence: ","Constitution: ","Charisma: "};
+		File output = new File(fileName);
+		
+		try {
+			PrintWriter print = new PrintWriter(output);
+			print.write(characterRace + " " + characterClass);
+			print.println();
+			for(int i = 0; i < statOrder.length; i++) {
+				print.write(statOrder[i] + stats.get(i));
+				print.println();
+			}
+			print.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		
 
 	}
 }
