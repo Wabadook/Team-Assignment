@@ -1,6 +1,10 @@
+
+
 # Overview
 Create a D&D Character builder using Swing.
 
+![[DnD_Character_Creation_GUI_5.png]]
+![[DnD_Character_Creation_GUI_6.png]]
 # Tasks
 - [ ] Get GUI configured
 	- [ ] Make room for portrait
@@ -16,6 +20,11 @@ Create a D&D Character builder using Swing.
 - [ ] Gender buttons
 - [ ] Stats
 	- [ ] unsure on implementation
+- [ ] displayInformation.java
+	- [x] Basic Implementation
+	- [x] Fill out race descriptions
+	- [x] Fill out class descriptions
+	- [ ] Clean up and remove code duplication
 # General Summary
 
 - This is an application that creates a DnD character with a combination of race and classes (GUI requirement),
