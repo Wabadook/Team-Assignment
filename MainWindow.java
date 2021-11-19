@@ -66,9 +66,10 @@ public class MainWindow extends JFrame {
 	int con = 10;
 	int cha = 5;
 
-	// Race, Class 
+	// Race, Class, Gender 
 	static String characterClass = "Warrior";
 	static String characterRace = "Human";
+	static Boolean isFemale = false;
 
 	// End temp
 
@@ -98,7 +99,7 @@ public class MainWindow extends JFrame {
 		btnRaceInfoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				characterRace = raceComboBox.getSelectedItem().toString();
-				displayInfoFromComboBox(raceComboBox);
+				displayInfoFromComboBox(raceComboBox, false);
 			}
 		});
 		raceSelectionPanel.add(btnRaceInfoButton);
@@ -116,7 +117,7 @@ public class MainWindow extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				characterClass = classComboBox.getSelectedItem().toString();
-				displayInfoFromComboBox(classComboBox);
+				displayInfoFromComboBox(classComboBox, true);
 			}
 		});
 		classSelectionPanel.add(btnClassInfoButton);
@@ -255,8 +256,9 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				List<Integer> statsExport = new ArrayList<>();
 				Collections.addAll(statsExport, str, wis, dex, intelligence, con, cha);
-				System.out.println(statsExport);
-				createCharacter(statsExport);
+				//Create character Object
+				Character newChar = new Character(characterClass, characterRace, str, wis, dex, intelligence, con, cha, isFemale);
+				newChar.createCharacter();
 			}
 		});
 		panel.add(btnCreateCharacterButton);
@@ -266,38 +268,19 @@ public class MainWindow extends JFrame {
 
 	}
 
-	private void displayInfoFromComboBox(JComboBox<?> box) {
+	private void displayInfoFromComboBox(JComboBox<?> box, Boolean isClass) {
 		JOptionPane infoFrame = new JOptionPane();
 
-		// Gets the race in the combobox and converts it to a string.
+		// Gets the race or class in the combobox and converts it to a string.
 		String findDesc = box.getSelectedItem().toString();
+		
 
 		// Opens a window.
-		displayInformation.getInformation(findDesc, false);
+		displayInformation.getInformation(findDesc, isClass);
 
 	}
 
 
-	private static void createCharacter(List<Integer> stats) {
-		System.out.println("Creating file...");
-		String fileName = characterRace + characterClass;
-		String[] statOrder = {"Strength: ","Wisdom: ","Dexterity: ","Intelligence: ","Constitution: ","Charisma: "};
-		File output = new File(fileName);
-		
-		try {
-			PrintWriter print = new PrintWriter(output);
-			print.write(characterRace + " " + characterClass);
-			print.println();
-			for(int i = 0; i < statOrder.length; i++) {
-				print.write(statOrder[i] + stats.get(i));
-				print.println();
-			}
-			print.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 
-		
-
-	}
 }
+
