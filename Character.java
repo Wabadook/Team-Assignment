@@ -60,9 +60,11 @@ public class Character {
 		try {
 			PrintWriter print = new PrintWriter(output);
 			if(isFemale == true) {
+				System.out.println("Character is female");
 				print.write("Female " + characterRace + " " + characterClass);				
 			} else if(isFemale == false) {
-				print.write("Male " + characterRace + " " + characterClass);	
+				print.write("Male " + characterRace + " " + characterClass);
+				System.out.println("Character is male");
 			}
 
 			print.println();
