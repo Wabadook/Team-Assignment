@@ -1,5 +1,7 @@
 
 
+
+
 # Overview
 Create a D&D Character builder using Swing.
 
@@ -8,8 +10,8 @@ Create a D&D Character builder using Swing.
 # Tasks
 - [ ] Get GUI configured
 	- [ ] Make room for portrait
-- [ ] Cycle class via drop-down box
-- [ ] Cycle race via drop-down box
+- [x] Cycle class via drop-down box
+- [x] Cycle race via drop-down box
 - [ ] Portraits
 	- [ ] Drawn
 	- [ ] Implemented
@@ -25,6 +27,9 @@ Create a D&D Character builder using Swing.
 	- [x] Fill out race descriptions
 	- [x] Fill out class descriptions
 	- [ ] Clean up and remove code duplication
+- [ ] User can enter a character name
+- [x] Write out a file containing character information
+- [ ] Classes should have default starting stats
 # General Summary
 
 - This is an application that creates a DnD character with a combination of race and classes (GUI requirement),
