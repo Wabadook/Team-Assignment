@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import java.awt.GridLayout;
@@ -70,6 +71,8 @@ public class MainWindow extends JFrame {
 	static String characterClass = "Warrior";
 	static String characterRace = "Human";
 	static Boolean isFemale = false;
+	
+	ButtonGroup genderGroup = new ButtonGroup();
 
 	// End temp
 
@@ -131,9 +134,23 @@ public class MainWindow extends JFrame {
 		contentPane.add(GenderPanel);
 
 		JRadioButton rdbtnManButton = new JRadioButton("Man");
+		rdbtnManButton.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            isFemale = false;
+
+	        }
+	    });
+		genderGroup.add(rdbtnManButton);
 		GenderPanel.add(rdbtnManButton);
 
 		JRadioButton rdbtnWomanButton = new JRadioButton("Woman");
+		rdbtnWomanButton.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            isFemale = true;
+
+	        }
+	    });
+		genderGroup.add(rdbtnWomanButton);
 		GenderPanel.add(rdbtnWomanButton);
 
 		JPanel StatsPanel = new JPanel();
@@ -254,9 +271,9 @@ public class MainWindow extends JFrame {
 		JButton btnCreateCharacterButton = new JButton("Create");
 		btnCreateCharacterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Integer> statsExport = new ArrayList<>();
-				Collections.addAll(statsExport, str, wis, dex, intelligence, con, cha);
 				//Create character Object
+				System.out.println(characterClass);
+				System.out.println(characterRace);
 				Character newChar = new Character(characterClass, characterRace, str, wis, dex, intelligence, con, cha, isFemale);
 				newChar.createCharacter();
 			}
@@ -283,4 +300,3 @@ public class MainWindow extends JFrame {
 
 
 }
-
