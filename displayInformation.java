@@ -1,63 +1,79 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 public class displayInformation {
 
 	// Race Desc
-	static String trollDesc = "This is a troll. They have long intimidating tusks. They are masterful warriors and scouts.";
-	static String humanDesc = "This is a human, the most versitile of all races. A relatively young race, they've yet to find their place in the wider world.";
-	static String elfDesc = "This is an elf. The oldest of races they've mastered the arcane arts. While they're relatively weak of constitution a few elves have been known to break that convention";
-	static String worgenDesc = "This is a worgen. Their fury is unbridled. However, those that can tame their fury make excellent hunters.";
+	static String trollDesc = "";
+	static String humanDesc = "";
+	static String elfDesc = "";
+	static String worgenDesc = "";
 
 	// Class Desc
-	static String mageDesc = "Mages cast spells.";
-	static String hunterDesc = "Hunters use animals and guns. Also they kite like pansies.";
-	static String paladinDesc = "Best class. Uses hammers.";
-	static String warriorDesc = "Okay class.";
+	static String mageDesc = "";
+	static String hunterDesc = "";
+	static String paladinDesc = "";
+	static String warriorDesc = "";
 
+	// Order in class/race file: troll,human,elf,worgen,mage,hunter,paladin,warrior
 
-	
 	/**
 	 * Finds class or race description
 	 * 
 	 * @param input   class or race to retrieve
 	 * @param isClass true to pull class info, false to pull race info
+	 * @throws FileNotFoundException
 	 */
-	public static void getInformation(String input, Boolean isClass) {
+	public static void getInformation(String input) throws FileNotFoundException {
+
+		File classRaceInfoFile = new File("classRaceInfo.txt");
+		String[] classRaceInfoArray = new String[7];
+		String output = "";
+		
+		
+		try (Scanner fileInput = new Scanner(classRaceInfoFile)) {
+			while (fileInput.hasNextLine()) {
+				for (int i = 0; i < classRaceInfoArray.length; i++) {
+					String lookingForClassRace = fileInput.nextLine();
+					classRaceInfoArray[i] = lookingForClassRace;
+				}
+
+			}
+		}
 
 		// HashMap of Races
 		HashMap<String, String> raceSet = new HashMap<>();
-		raceSet.put("Troll", trollDesc);
-		raceSet.put("Human", humanDesc);
-		raceSet.put("Elf", elfDesc);
-		raceSet.put("Worgen", worgenDesc);
+		raceSet.put("Troll", classRaceInfoArray[0]);
+		raceSet.put("Human", classRaceInfoArray[1]);
+		raceSet.put("Elf", classRaceInfoArray[2]);
+		raceSet.put("Worgen", classRaceInfoArray[3]);
+		raceSet.put("Mage", classRaceInfoArray[4]);
+		raceSet.put("Hunter", classRaceInfoArray[5]);
+		raceSet.put("Paladin", classRaceInfoArray[6]);
+		raceSet.put("Warrior", classRaceInfoArray[7]);
 
-		// HasMap of Classes
-		HashMap<String, String> classSet = new HashMap<>();
-		classSet.put("Mage", mageDesc);
-		classSet.put("Hunter", hunterDesc);
-		classSet.put("Paladin", paladinDesc);
-		classSet.put("Warrior", warriorDesc);
-
-		String output = "";
-
-		if (isClass == false) {
-			output = raceSet.get(input);
+		for(Map.Entry<String, String> el : raceSet.entrySet()){
+			if(el.getKey() == input) {
+				output = el.getValue();
+			}
 		}
+		
 
-		if (isClass == true) {
-			output = classSet.get(input);
-		}
 
 		displayInformationWindow(output);
 	}
-	
+
 	public static void displayInformationWindow(String input) {
 		JOptionPane infoFrame = new JOptionPane();
 		JOptionPane.showMessageDialog(infoFrame, input);
 	}
-
-	
 
 }
