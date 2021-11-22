@@ -67,11 +67,11 @@ public class MainWindow extends JFrame {
 	int con = 10;
 	int cha = 5;
 
-	// Race, Class, Gender 
+	// Race, Class, Gender
 	static String characterClass = "Warrior";
 	static String characterRace = "Human";
 	static Boolean isFemale = false;
-	
+
 	ButtonGroup genderGroup = new ButtonGroup();
 
 	// End temp
@@ -135,21 +135,19 @@ public class MainWindow extends JFrame {
 
 		JRadioButton rdbtnManButton = new JRadioButton("Man");
 		rdbtnManButton.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            isFemale = false;
-
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				isFemale = false;
+			}
+		});
 		genderGroup.add(rdbtnManButton);
 		GenderPanel.add(rdbtnManButton);
 
 		JRadioButton rdbtnWomanButton = new JRadioButton("Woman");
 		rdbtnWomanButton.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            isFemale = true;
-
-	        }
-	    });
+			public void actionPerformed(ActionEvent e) {
+				isFemale = true;
+			}
+		});
 		genderGroup.add(rdbtnWomanButton);
 		GenderPanel.add(rdbtnWomanButton);
 
@@ -164,7 +162,7 @@ public class MainWindow extends JFrame {
 		JButton btnStrDownButton = new JButton("-");
 		btnStrDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (pointsToSpend != 20 && str != 0) {
+				if (str > 0) {
 					str--;
 					pointsToSpend++;
 					lblStrLabel.setText("Str: " + str);
@@ -180,7 +178,9 @@ public class MainWindow extends JFrame {
 
 		JButton btnStrUpButton = new JButton("+");
 		btnStrUpButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+				// raiseOrLowerStat(str, "Str", lblStrLabel, true);
 				if (pointsToSpend > 0) {
 					str++;
 					pointsToSpend--;
@@ -271,10 +271,11 @@ public class MainWindow extends JFrame {
 		JButton btnCreateCharacterButton = new JButton("Create");
 		btnCreateCharacterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Create character Object
+				// Create character Object
 				System.out.println(characterClass);
 				System.out.println(characterRace);
-				Character newChar = new Character(characterClass, characterRace, str, wis, dex, intelligence, con, cha, isFemale);
+				Character newChar = new Character(characterClass, characterRace, str, wis, dex, intelligence, con, cha,
+						isFemale);
 				newChar.createCharacter();
 			}
 		});
@@ -285,18 +286,55 @@ public class MainWindow extends JFrame {
 
 	}
 
+	/**
+	 * Displays class/race info in a new window.
+	 * 
+	 * @param box     Combo box to pull information from.
+	 * @param isClass True if class, false if race.
+	 */
 	private void displayInfoFromComboBox(JComboBox<?> box, Boolean isClass) {
-		JOptionPane infoFrame = new JOptionPane();
 
 		// Gets the race or class in the combobox and converts it to a string.
 		String findDesc = box.getSelectedItem().toString();
-		
 
 		// Opens a window.
-		displayInformation.getInformation(findDesc, isClass);
+		try {
+			displayInformation.getInformation(findDesc);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
+	/**
+	 * Raises or lowers a characters stat and updates the main window.
+	 * 
+	 * @param stat    Stat to be raised or lowered
+	 * @param label   Label associated with stat.
+	 * @param toRaise True if raising, false if lowering.
+	 */
+	private void raiseOrLowerStat(int stat, String statName, JLabel label, Boolean toRaise) {
 
+		if (toRaise == true) {
+			if (pointsToSpend > 0) {
+				stat++;
+				System.out.println("Setting " + stat);
+				pointsToSpend--;
+				label.setText(statName + ": " + stat);
+				System.out.println("Attempting to set text for " + label.getText());
+				lbltotalStatsLabel.setText("Points: " + pointsToSpend);
+			}
+		}
+		if (toRaise == false) {
+			if (stat > 0) {
+				stat--;
+				pointsToSpend++;
+				label.setText(statName + ": " + stat);
+				lbltotalStatsLabel.setText("Points: " + pointsToSpend);
+			}
+		}
+	}
 
 }
+
